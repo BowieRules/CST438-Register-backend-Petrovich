@@ -11,8 +11,7 @@ public class EnrollmentDTO {
 		this.studentEmail=null;
 		this.studentName=null;
 		this.course_id = 0;
-	}
-	
+	}	
 	
 	public EnrollmentDTO(String studentEmail, String studentName, int course_id) {
 		this.id = 0;
@@ -21,14 +20,11 @@ public class EnrollmentDTO {
 		this.course_id = course_id;
 	}
 
-
 	@Override
 	public String toString() {
 		return "EnrollmentDTO [id=" + id + ", studentEmail=" + studentEmail + ", studentName=" + studentName
 				+ ", course_id=" + course_id + "]";
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -54,9 +50,5 @@ public class EnrollmentDTO {
 		} else if (!studentName.equals(other.studentName))
 			return false;
 		return true;
-	}
-	
-	
-	
-	
+	}	
 }

@@ -128,7 +128,5 @@ public class ScheduleDTO {
 			return false;
 		return true;
 	}
-	
-	
 
 }

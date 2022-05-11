@@ -41,8 +41,7 @@ public class ScheduleController {
 	
 	@Autowired
 	GradebookService gradebookService;
-	
-	
+		
 	/*
 	 * get current schedule for student.
 	 */
@@ -62,12 +61,10 @@ public class ScheduleController {
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student not found. " );
 		}
 	}
-	
-
-	
+		
 	@PostMapping("/schedule")
 	@Transactional
-	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO  ) { 
+	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO ) { 
 
 		String student_email = "test@csumb.edu";   // student's email 
 		
@@ -93,8 +90,7 @@ public class ScheduleController {
 			return result;
 		} else {
 			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Course_id invalid or student not allowed to register for the course.  "+courseDTO.course_id);
-		}
-		
+		}		
 	}
 	
 	@DeleteMapping("/schedule/{enrollment_id}")
@@ -154,5 +150,4 @@ public class ScheduleController {
 		courseDTO.grade = e.getCourseGrade();
 		return courseDTO;
 	}
-	
 }

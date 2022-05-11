@@ -19,6 +19,5 @@ public interface EnrollmentRepository extends CrudRepository <Enrollment, Intege
 	Enrollment findByEmailAndCourseId(@Param("email") String email, @Param("course_id") int course_id);
 	
 	@SuppressWarnings("unchecked")
-	Enrollment save(Enrollment e);
-	
+	Enrollment save(Enrollment e);	
 }

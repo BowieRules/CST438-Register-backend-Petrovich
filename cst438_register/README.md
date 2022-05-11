@@ -1,3 +1,8 @@
+Database Tables
+
+    Course - course number, title, year, semester, hours, location, instructor, start and end dates
+    Student - id, name and email of student
+    Enrollment - student id, course number, year, semester
 ## CST438 Software Engineering California State University Monterey Bay
 ## Registration service project
 ### Users can view their course schedule and add/drop courses 
@@ -15,14 +20,9 @@
 - enrollment_id from a course enrollment  See ScheduleDTO.CourseDTO.id 
 
 ### Database Tables
-- Building - id, name
-- Room - id, building id, code, capacity
-- Course - id, code, name, description, credits, level
-- Enrollment - student id, instructor id, course id, year, semester id, room id
-- Role - student/admin/instructor
-- UserRole - linking table for users (many to many)
-- User - for SSO, first name, last name, email, password, username
-- Semester - name, dates, year, registration opens
+- Course - course number, title, year, semester, hours, location, instructor, start and end dates
+- Student - id, name and email of student
+- Enrollment - student id, course number, year, semester
 
 ### Rest apis used by other services
 - tbd 
