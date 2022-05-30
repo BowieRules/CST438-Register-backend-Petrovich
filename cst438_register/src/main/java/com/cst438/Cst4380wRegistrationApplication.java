@@ -13,16 +13,14 @@ public class Cst4380wRegistrationApplication  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Cst4380wRegistrationApplication.class, args);
-	}
-	
+	}	
 	
 	@Bean(name = "GradebookService")
 	@ConditionalOnProperty(prefix = "gradebook", name = "service", havingValue = "MQ")
 	public GradebookService gradebookServiceMQ() {
 		return new GradebookServiceMQ();
 	}
-	
-	
+		
 	@Bean(name = "GradebookService")
 	@ConditionalOnProperty(prefix = "gradebook", name = "service", havingValue = "REST")
 	public GradebookService gradebookServiceREST() {
@@ -34,5 +32,4 @@ public class Cst4380wRegistrationApplication  {
 	public GradebookService gradebookDefault() {
 		return new GradebookService();
 	}
-
 }
