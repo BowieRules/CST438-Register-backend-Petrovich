@@ -2,8 +2,7 @@ package com.cst438;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +83,7 @@ public class JUnitTestStudent {
 			found = true;
 		}
 		
-		assertTrue("Student not added.", found);
+		assertEquals(true, found);
 		verify(studentRepository).save(any(Student.class));
 		verify(studentRepository, times(1)).findByEmail(TEST_STUDENT_EMAIL);
 	}
