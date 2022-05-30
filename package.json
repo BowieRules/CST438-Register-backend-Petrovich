@@ -1,0 +1,4 @@
+"scripts": {
+    "postinstall": "cd cst438_register",
+    "start": "cd cst438_register"
+}
