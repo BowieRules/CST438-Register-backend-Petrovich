@@ -37,7 +37,7 @@ import com.cst438.domain.EnrollmentRepository;
 @SpringBootTest
 public class EndToEndScheduleTest {
 
-	public static final String CHROME_DRIVER_FILE_LOCATION = "C:/chromedriver_win32/chromedriver.exe";
+	public static final String CHROME_DRIVER_FILE_LOCATION = "C:/temp/chromedriver_win32/chromedriver.exe";
 
 	public static final String URL = "http://localhost:3000";
 
@@ -113,7 +113,7 @@ public class EndToEndScheduleTest {
 			// enter course no and click Add button
 			
 			driver.findElement(By.xpath("//input[@name='course_id']")).sendKeys(Integer.toString(TEST_COURSE_ID));
-			driver.findElement(By.xpath("//button[@id='Add']")).click();
+			driver.findElement(By.xpath("//button[@id='AddCourse']")).click();
 			Thread.sleep(SLEEP_DURATION);
 
 			/*
@@ -123,7 +123,7 @@ public class EndToEndScheduleTest {
 		
 			Course course = courseRepository.findById(TEST_COURSE_ID).get();
 			
-			List<WebElement> elements  = driver.findElements(By.xpath("//div[@data-field='title']/div[@class='MuiDataGrid-cellContent']"));
+			List<WebElement> elements = driver.findElements(By.xpath("//div[@data-field='title']/div[@class='MuiDataGrid-cellContent']"));
 			boolean found = false;
 			for (WebElement e : elements) {
 				System.out.println(e.getText()); // for debug
