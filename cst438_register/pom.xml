@@ -15,7 +15,7 @@
 	<name>cst438_0</name>
 	<description>Course Schedule Project</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,9 +77,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- end selenium -->
-		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>     
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -88,5 +90,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
