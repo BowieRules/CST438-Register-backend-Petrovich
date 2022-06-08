@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.cst438.domain.Course;
@@ -24,17 +26,20 @@ import com.cst438.domain.ScheduleDTO;
 import com.cst438.domain.Student;
 import com.cst438.domain.StudentRepository;
 import com.cst438.service.GradebookService;
+import com.cst438.domain.AdminRepository;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000", "https://cst438registerfe.herokuapp.com/" })
-public class ScheduleController {
+@CrossOrigin(origins = { "http://localhost:3000" })
+public class ScheduleController {	
 	
-	
-	@Autowired
+	@Autowired	
 	CourseRepository courseRepository;
 	
 	@Autowired
 	StudentRepository studentRepository;
+	
+	@Autowired
+	AdminRepository adminRepo;
 	
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
@@ -46,9 +51,9 @@ public class ScheduleController {
 	 * get current schedule for student.
 	 */
 	@GetMapping("/schedule")
-	public ScheduleDTO getSchedule( @RequestParam("year") int year, @RequestParam("semester") String semester ) {
+	public ScheduleDTO getSchedule( @RequestParam("year") int year, @RequestParam("semester") String semester, @AuthenticationPrincipal OAuth2User principal ) {
 		System.out.println("/schedule called.");
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");   // student's email 
 		
 		Student student = studentRepository.findByEmail(student_email);
 		if (student != null) {
@@ -58,23 +63,22 @@ public class ScheduleController {
 			return sched;
 		} else {
 			System.out.println("/schedule student not found. "+student_email);
-			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student not found. " );
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student not found." );
 		}
 	}
 		
 	@PostMapping("/schedule")
 	@Transactional
-	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO ) { 
+	public ScheduleDTO.CourseDTO addCourse( @RequestBody ScheduleDTO.CourseDTO courseDTO, @AuthenticationPrincipal OAuth2User principal ) {
 
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");    // student's email 
 		
 		Student student = studentRepository.findByEmail(student_email);
 		Course course  = courseRepository.findById(courseDTO.course_id).orElse(null);
 		
 		// student.status
 		// = 0  ok to register
-		// != 0 hold on registration.  student.status may have reason for hold.
-		
+		// != 0 hold on registration.  student.status may have reason for hold		
 		if (student!= null && course!=null && student.getStatusCode()==0) {
 			// TODO check that today's date is not past add deadline for the course.
 			Enrollment enrollment = new Enrollment();
@@ -88,16 +92,23 @@ public class ScheduleController {
 			
 			ScheduleDTO.CourseDTO result = createCourseDTO(savedEnrollment);
 			return result;
-		} else {
-			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Course_id invalid or student not allowed to register for the course.  "+courseDTO.course_id);
-		}		
+		} else
+			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Course_id invalid or student not allowed to register for the course.  "+courseDTO.course_id);
+	}
+	
+	@GetMapping("/isAdmin")
+	public String isAdmin (@AuthenticationPrincipal OAuth2User principal) {
+		if (adminRepo.findByEmail(principal.getAttribute("email")) != null)
+			return "true";
+		else
+			return "false";			
 	}
 	
 	@DeleteMapping("/schedule/{enrollment_id}")
 	@Transactional
-	public void dropCourse(  @PathVariable int enrollment_id  ) {
+	public void dropCourse(  @PathVariable int enrollment_id, @AuthenticationPrincipal OAuth2User principal ) {
 		
-		String student_email = "test@csumb.edu";   // student's email 
+		String student_email = principal.getAttribute("email");   // student's email 
 		
 		// TODO  check that today's date is not past deadline to drop course.
 		
@@ -109,7 +120,7 @@ public class ScheduleController {
 			 enrollmentRepository.delete(enrollment);
 		} else {
 			// something is not right with the enrollment.  
-			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+enrollment_id);
+			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Enrollment_id invalid. "+enrollment_id);
 		}
 	}
 	
